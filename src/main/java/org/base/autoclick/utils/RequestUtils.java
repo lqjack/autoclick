@@ -15,12 +15,17 @@ public class RequestUtils {
         return request(url, 0);
     }
 
-    public static Callable<String> request(URL url, int timeout) throws Throwable {
+    public static Callable<String> request(URL url, int timeout,final Proxy proxy) throws Throwable {
         return () -> {
             HttpURLConnection conn = null;
             if(url == null) throw new IllegalArgumentException("url cannot be null");
             try {
-                conn = (HttpURLConnection) url.openConnection();
+
+                if(proxy != null) {
+                    conn = (HttpURLConnection)url.openConnection(proxy);
+                }else {
+                    conn = (HttpURLConnection) url.openConnection();
+                }
                 conn.setDoOutput(true);
                 conn.setUseCaches (false);
                 conn.setDoOutput(true);
@@ -32,6 +37,10 @@ public class RequestUtils {
                 conn.disconnect();
             }
         };
+
+    }
+    public static Callable<String> request(URL url, int timeout) throws Throwable {
+        return request(url,timeout,null);
     }
 
     private static String convert(InputStream stream) throws IOException {
@@ -45,6 +54,8 @@ public class RequestUtils {
             //warning output the code to client
         }
         //slient
+
+        //TODO other http head
     }
 
     private Authenticator buildAuthenticator(final String username, final String password) {

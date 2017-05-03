@@ -6,7 +6,9 @@ import org.base.autoclick.utils.*;
 import sun.misc.IOUtils;
 
 import java.io.*;
+import java.net.Proxy;
 import java.net.URL;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,28 @@ public class RequestUtilsTest {
         String response = completionService.take().get();
 
         ResponseUtils.parseContent(response);
+
+    }
+
+    @Test
+    public void testVisitPageUnderDifferProxy() {
+        ProxyManager pm = new ProxyManager();
+
+        Set<Proxy> proxies = pm.buildProxy();
+
+        URL url = null;
+        proxies.parallelStream()
+                .map(proxy -> {
+                    try {
+                        return RequestUtils.request(url, TIME_OUT, proxy);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        return null;
+                    }
+                })
+//                .filter(head == 200)
+                .collect(Collectors.counting());
+
 
     }
 }
