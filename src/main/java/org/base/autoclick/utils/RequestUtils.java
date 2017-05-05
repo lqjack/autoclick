@@ -15,17 +15,19 @@ public class RequestUtils {
         return request(url, 0);
     }
 
-    public static Callable<String> request(URL url, int timeout,final Proxy proxy) throws Throwable {
+    public static Callable<String> request(URL url, int timeout, final ProxyConfig proxyConfig) throws Throwable {
         return () -> {
             HttpURLConnection conn = null;
-            if(url == null) throw new IllegalArgumentException("url cannot be null");
+            Checks.checkEmpty(url, "url cannot be null");
             try {
+                Checks.checkEmpty(proxyConfig, "proxy config cannot bu null");
 
-                if(proxy != null) {
-                    conn = (HttpURLConnection)url.openConnection(proxy);
+                if (!proxyConfig.isEnableProxy()) {
+                    conn = (HttpURLConnection) url.openConnection(proxyConfig.getProxy());
                 }else {
                     conn = (HttpURLConnection) url.openConnection();
                 }
+                proxyConfig.urlAuthoInfo(conn);
                 conn.setDoOutput(true);
                 conn.setUseCaches (false);
                 conn.setDoOutput(true);

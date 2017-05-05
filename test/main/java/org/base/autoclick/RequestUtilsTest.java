@@ -1,15 +1,16 @@
 package org.base.autoclick;
 
+import org.base.autoclick.utils.ProxyConfig;
+import org.base.autoclick.utils.ProxyManager;
+import org.base.autoclick.utils.RequestUtils;
+import org.base.autoclick.utils.ResponseUtils;
 import org.junit.Test;
 
-import org.base.autoclick.utils.*;
-import sun.misc.IOUtils;
-
-import java.io.*;
-import java.net.Proxy;
 import java.net.URL;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class RequestUtilsTest {
@@ -32,16 +33,16 @@ public class RequestUtilsTest {
     }
 
     @Test
-    public void testVisitPageUnderDifferProxy() {
+    public void testVisitPageUnderDifferProxy() throws InterruptedException {
         ProxyManager pm = new ProxyManager();
 
-        Set<Proxy> proxies = pm.buildProxy();
+        Set<ProxyConfig> proxies = pm.buildProxyConfig();
 
         URL url = null;
         proxies.parallelStream()
-                .map(proxy -> {
+                .map(proxyConfig -> {
                     try {
-                        return RequestUtils.request(url, TIME_OUT, proxy);
+                        return RequestUtils.request(url, TIME_OUT, proxyConfig);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
                         return null;
