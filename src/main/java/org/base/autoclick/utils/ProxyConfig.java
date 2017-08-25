@@ -1,12 +1,10 @@
 package org.base.autoclick.utils;
 
-
-import lombok.Data;
-
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URLConnection;
 import java.util.Base64;
+import lombok.Data;
 
 @Data
 public class ProxyConfig {

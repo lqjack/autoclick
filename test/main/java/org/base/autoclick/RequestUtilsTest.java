@@ -1,17 +1,16 @@
 package org.base.autoclick;
 
-import org.base.autoclick.utils.ProxyConfig;
-import org.base.autoclick.utils.ProxyManager;
-import org.base.autoclick.utils.RequestUtils;
-import org.base.autoclick.utils.ResponseUtils;
-import org.junit.Test;
-
 import java.net.URL;
 import java.util.Set;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import org.base.autoclick.utils.ProxyConfig;
+import org.base.autoclick.utils.ProxyManager;
+import org.base.autoclick.utils.RequestUtils;
+import org.base.autoclick.utils.ResponseUtils;
+import org.junit.Test;
 
 public class RequestUtilsTest {
 
